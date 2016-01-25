@@ -19,6 +19,8 @@
 package org.pixelgaffer.turnierserver.tourality;
 
 import java.awt.Point;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +44,29 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 		field = new int[20][20];
 		output = new String[2];
 		score = new int[2];
+		
+		try(InputStreamReader in = new InputStreamReader(getClass().getResourceAsStream("1.trlt"))) {
+			for(int i = 0; i < 20; i++) {
+				for(int j = 0; j < 20; j++) {
+					char c = (char) in.read();
+					if(Character.isDigit(c)) {
+						pos[Character.getNumericValue(c)] = new Point(i, j);
+					}
+					else if(c == '#') {
+						field[i][j] = 2;
+					}
+					else if(c == '+') {
+						field[i][j] = 1;
+					}
+					else {
+						field[i][j] = 0;
+					}
+				}
+				in.skip(1);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

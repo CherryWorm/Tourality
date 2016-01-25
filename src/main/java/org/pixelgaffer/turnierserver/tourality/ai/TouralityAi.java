@@ -43,7 +43,7 @@ public abstract class TouralityAi extends Ai {
 		super(args);
 	}
 	
-	private Feld[][] field = new Feld[10][10];
+	private Feld[][] field = new Feld[20][20];
 	
 	@Override
 	protected String update(String answer) {
@@ -74,7 +74,7 @@ public abstract class TouralityAi extends Ai {
 	 * 
 	 * @param du Deine Position
 	 * @param gegner Die Position des Gegners
-	 * @param spielfeld Das Spielfeld (10x10)
+	 * @param spielfeld Das Spielfeld (20x20)
 	 * @return Deinen Zug
 	 */
 	public abstract Richtung bewegen(Point du, Point gegner, Feld[][] spielfeld);
