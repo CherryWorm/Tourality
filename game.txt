@@ -1,0 +1,57 @@
+NAME = Groker
+VERSION = 1.0
+
+JAVAVERSION = 1.8
+ENCODING = utf8
+
+DEBUG = true
+
+logic {
+	LIBS += lib/java/gamelogic.jar
+	LIBS += lib/java/utils.jar
+		
+	SOURCES = src/main/java
+	FILES   = org/pixelgaffer/turnierserver/tourality/TouralityGameState.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityUpdate.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityResponse.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/logic/TouralityAiObject.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/logic/TouralityLogic.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/logic/TouralityRenderData.java
+	LOGICCLASS = org.pixelgaffer.turnierserver.tourality.logic.TouralityLogic
+}
+
+java {
+	LIBS += lib/java/ailibrary.jar
+	LIBS += lib/java/gamelogic.jar
+	LIBS += lib/java/utils.jar
+
+	SOURCES = src/main/java
+	FILES   = org/pixelgaffer/turnierserver/tourality/TouralityGameState.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityUpdate.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityResponse.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/ai/TouralityAi.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/ai/Richtung.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/ai/Feld.java
+}
+
+python {
+	SOURCES = src/main/python
+	FILES   = game_wrapper.py
+}
+
+go {
+	SOURCES = src/main/go
+	FILES = wrapper.go
+}
+
+c {
+	LIBS        += lib/c/ailib/libailib.so
+	INCLUDEPATH  = lib/c/ailib
+	HEADERS      = lib/c/ailib/output.h
+	HEADERS     += lib/c/ailib/properties.h
+	HEADERS     += lib/c/ailib/wrapper.h
+	
+	SOURCES  = src/main/c
+	FILES    = grokerWrapper.c
+	HEADERS += src/main/c/grokerWrapper.h
+}
