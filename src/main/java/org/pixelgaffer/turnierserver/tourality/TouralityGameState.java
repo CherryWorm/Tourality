@@ -50,7 +50,7 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 				for(int j = 0; j < 20; j++) {
 					char c = (char) in.read();
 					if(Character.isDigit(c)) {
-						pos[Character.getNumericValue(c)] = new Point(i, j);
+						pos[Character.getNumericValue(c) - 1] = new Point(i, j);
 					}
 					else if(c == '#') {
 						field[i][j] = 2;
