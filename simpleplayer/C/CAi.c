@@ -1,16 +1,16 @@
 // C Version
 
-#include "grokerWrapper.h"
+#include "touralityWrapper.h"
 
-/// Diese Methode wird jede Runde aufgerufen. Player ist ein struct mit den beiden int-Werten letzterEinsatz und
-/// gewonneneChips. Der return-Wert ist der Einsatz der KI. Zur Ausgabe stehen die folgenden Funktionen zur
-/// Verfügung:
+/// Diese Methode wird jede Runde aufgerufen. Player ist ein struct mit zwei int-Werten x und y.
+/// Der return-Wert ist die Richtung, in die sich die KI bewegt. Zur Ausgabe stehen die folgenden
+/// Funktionen zur Verfügung:
 ///  - append (out, "text"): Gibt "text" aus
 ///  - appendi(out, 123456): Gibt 123465 aus
 ///  - appendd(out, 123.45): Gibt 123.45 aus
-int calc (Player *me, Player *enemy, OutputBuffer *out)
+Direction move (Player *me, Player *enemy, Grid *grid, OutputBuffer *out)
 {
-	return 5;
+	return STAY;
 }
 
-GROKER_MAIN(calc)
+TOURALITY_MAIN(move)

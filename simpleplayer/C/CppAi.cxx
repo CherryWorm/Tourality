@@ -3,22 +3,23 @@
 
 /*
 
-#include "grokerWrapper.h"
+#include "touralityWrapper.h"
 
 
-class Ai : public GrokerAi
+class Ai : public TouralityAi
 {
 public:
-	explicit Ai (Wrapper *w) : GrokerAi(w) {}
+	explicit Ai (Wrapper *w) : TouralityAi(w) {}
 	
-	/// Diese Methode wird jede Runde aufgerufen. Player ist ein struct mit den beiden int-Werten letzterEinsatz und
-	/// gewonneneChips. Der return-Wert ist der Einsatz der KI. Bitte out() statt cout/cerr zur Ausgabe benutzen.
-	int calc (Player *me, Player *enemy)
+	/// Diese Methode wird jede Runde aufgerufen. Player ist ein struct mit zwei int-Werten x und y.
+	/// Der return-Wert ist die Richtung, in die sich die KI bewegt. Bitte out() statt cout/cerr zur
+	/// Ausgabe benutzen.
+	Direction move (Player *me, Player *enemy, Grid *grid)
 	{
-		return 5;
+		return STAY;
 	}
 };
 
-GROKER_MAIN(Ai)
+TOURALITY_MAIN(Ai)
 
 */

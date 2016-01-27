@@ -54,6 +54,6 @@ c {
 	HEADERS     += lib/c/ailib/wrapper.h
 	
 	SOURCES  = src/main/c
-	FILES    = grokerWrapper.c
-	HEADERS += src/main/c/grokerWrapper.h
+	FILES    = touralityWrapper.c
+	HEADERS += src/main/c/touralityWrapper.h
 }

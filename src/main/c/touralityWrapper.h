@@ -1,7 +1,7 @@
 /*
- * grokerWrapper.h
+ * touralityWrapper.h
  *
- * Copyright (C) 2015 Pixelgaffer
+ * Copyright (C) 2016 Pixelgaffer
  *
  * This work is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,16 +16,39 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef GROKER_WRAPPER_H
-#define GROKER_WRAPPER_H
+#ifndef TOURALITY_WRAPPER_H
+#define TOURALITY_WRAPPER_H
 
 #include "wrapper.h"
 
 #include <stdlib.h>
 
+/// The default tourality grid size.
+#define TOURALITY_GRID_SIZE 20
+/// The initial amount of coins.
+#define TOURALITY_COINS 40
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+enum _fieldType
+{
+	EMPTY=' ', COIN='+', WALL='#'
+};
+typedef enum _fieldType FieldType;
+
+/**
+ * Diese Klasse speichert ein Tourality-Grid.
+ */
+struct _grid
+{
+	FieldType fields[TOURALITY_GRID_SIZE][TOURALITY_GRID_SIZE];
+	int coinsX[TOURALITY_COINS];
+	int coinsY[TOURALITY_COINS];
+	int coinsAvail[TOURALITY_COINS];
+};
+typedef struct _grid Grid;
 
 /**
  * Diese Klasse speichert die für die KI sichtbaren Daten einer KI. Dies ist der Einsatz der KI der letzten Runde
@@ -33,10 +56,8 @@ extern "C" {
  */
 struct _player
 {
-	/** Der Einsatz der KI in der letzten Runde. */
-	int letzterEinsatz;
-	/** Die Anzahl der Chips, die die KI gewonnen hat. */
-	int gewonneneChips;
+	/** Die Koordinaten des Spielers. */
+	int x, y;
 };
 typedef struct _player Player;
 typedef struct _player Spieler; // für die die lieber deutsch proggen
@@ -47,23 +68,32 @@ typedef struct _player Spieler; // für die die lieber deutsch proggen
 Player* parsePlayer (char *s);
 
 /**
- * Diese Klasse repräsentiert das Ergebnis einer Runde. Dabei wird die Anzahl der Chips, die die KI setzt, und die
+ * Dieses Enum gibt die Richtung an, in die sich die KI bewegen soll.
+ */
+enum _direction
+{
+	UP=0, DOWN=2, LEFT=3, RIGHT=1, STAY=4 // nico benutzt java.lang.Enum.ordinal()
+};
+typedef enum _direction Direction;
+
+/**
+ * Diese Klasse repräsentiert das Ergebnis einer Runde. Dabei wird die Bewegungsrichtung der KI und die
  * Ausgabe der KI gespeichert.
  */
 struct _result
 {
-	int chips;
+	Direction dir;
 	const char *output;
 };
 typedef struct _result Result;
 
-#define GROKER_CALLBACK(name) Result* (* name ) (Player*, Player*)
+#define TOURALITY_CALLBACK(name) Result* (* name ) (Player*, Player*, Grid*)
 
 /**
  * Dies ist die MainLoop von Grooker. Sie wartet auf Daten vom Server, leitet diese an die eigentliche KI weiter, und
  * sendet diese Daten zurück.
  */
-char* grokerMainLoop (Wrapper *w, GROKER_CALLBACK(callback));
+char* touralityMainLoop (Wrapper *w, TOURALITY_CALLBACK(callback));
 
 #ifdef __cplusplus
 }
@@ -73,24 +103,18 @@ char* grokerMainLoop (Wrapper *w, GROKER_CALLBACK(callback));
 
 #include <sstream>
 
-extern "C"
-{
-	void __c_crash (Wrapper *w, const char *reason) { crash(w, reason); }
-	void __c_surrender (Wrapper *w) { surrender(w); }
-}
-
 /**
- * Dies ist die Mutter-Klasse von jeder Groker-KI. Sie muss im Konstuktor genau ein Argument, `Wrapper*`,
- * entgegennehmen, und an diese Klasse weitergeben. Zudem muss die pure virtual Methode `calc` überschrieben
+ * Dies ist die Mutter-Klasse von jeder Tourality-KI. Sie muss im Konstuktor genau ein Argument, `Wrapper*`,
+ * entgegennehmen, und an diese Klasse weitergeben. Zudem muss die pure virtual Methode `move` überschrieben
  * werden. Diese Methode wird jede Runde aufgerufen. Zudem enthält diese Klasse eine Methode names `out`, die
  * ein `std::stringstream` zurückgibt, an das die KI ihre Ausgabe schicken kann. <b>Alles, was die KI an
- * `std::cout` sendet, geht verloren!!!</b>. Der Name dieser Klasse gehört als Argument an das `GROKER_MAIN`
+ * `std::cout` sendet, geht verloren!!!</b>. Der Name dieser Klasse gehört als Argument an das `TOURALITY_MAIN`
  * Makro.
  */
-class GrokerAi
+class TouralityAi
 {
 public:
-	explicit GrokerAi (Wrapper *wrapper)
+	explicit TouralityAi (Wrapper *wrapper)
 		: w(wrapper)
 	{
 		if (!w)
@@ -98,12 +122,13 @@ public:
 	}
 	
 	/**
-	 * Wird jede Runde aufgerufen. Gibt die Anzahl der Chips, die die KI einsetzt, zurück.
+	 * Wird jede Runde aufgerufen. Gibt die Richtung (`Direction`), in die sich die KI bewegt, zurück.
 	 * @param me Die eigene KI.
 	 * @param enemy Die gegnerische KI.
-	 * @return Die Anzahl an Chips, die die KI setzen will.
+	 * @param grid Das Spielfeld.
+	 * @return Die Richtung (`Direction`), in die sich die KI bewegt.
 	 */
-	virtual int calc (Player *me, Player *enemy) = 0;
+	virtual Direction move (Player *me, Player *enemy, Grid *grid) = 0;
 	
 	/**
 	 * Gibt den Inhalt des aktuellen Output Buffers zurück und leert diesen.
@@ -136,13 +161,13 @@ private:
 	std::stringstream _out;
 };
 
-#define GROKER_MAIN(clazzname) \
+#define TOURALITY_MAIN(clazzname) \
 	clazzname *__ai = 0; \
 	\
-	Result* __callback (Player *me, Player *enemy) \
+	Result* __callback (Player *me, Player *enemy, Grid *grid) \
 	{ \
 		Result *r = (Result*) malloc(sizeof(Result)); \
-		r->chips = __ai->calc(me, enemy); \
+		r->dir = __ai->move(me, enemy, grid); \
 		r->output = __ai->readOutput(); \
 		return r; \
 	} \
@@ -151,7 +176,7 @@ private:
 	{ \
 		Wrapper *w = globalInit(argc, argv); \
 		__ai = new clazzname (w); \
-		grokerMainLoop(w, __callback); \
+		touralityMainLoop(w, __callback); \
 		globalCleanup(&w); \
 		delete __ai; \
 		return 0; \
@@ -161,12 +186,12 @@ private:
 
 #include "output.h"
 
-#define GROKER_MAIN(callback) \
-	Result* __callback (Player *me, Player *enemy) \
+#define TOURALITY_MAIN(callback) \
+	Result* __callback (Player *me, Player *enemy, Grid *grid) \
 	{ \
 		Result *r = malloc(sizeof(Result)); \
 		OutputBuffer *out = createBuffer(); \
-		r->chips = callback(me, enemy, out); \
+		r->dir = callback(me, enemy, grid, out); \
 		r->output = readBuffer(out, OB_RETURN_COPY); \
 		destroyBuffer(out); \
 		return r; \
@@ -175,7 +200,7 @@ private:
 	int main (int argc, char **argv) \
 	{ \
 		Wrapper *w = globalInit(argc, argv); \
-		grokerMainLoop(w, __callback); \
+		touralityMainLoop(w, __callback); \
 		globalCleanup(&w); \
 		return 0; \
 	}
