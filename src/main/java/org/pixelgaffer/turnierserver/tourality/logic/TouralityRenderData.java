@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.List;
 
+import org.pixelgaffer.turnierserver.tourality.Feld;
 import org.pixelgaffer.turnierserver.tourality.TouralityGameState;
 
 public class TouralityRenderData {
@@ -55,6 +56,6 @@ public class TouralityRenderData {
 	public HashMap<String, Point> position;
 	public HashMap<String, String> output;
 	public List<Point> coins;
-	public int[][] field;
+	public Feld[][] field;
 	
 }

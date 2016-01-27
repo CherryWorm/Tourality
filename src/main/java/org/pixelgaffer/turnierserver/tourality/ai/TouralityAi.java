@@ -21,6 +21,7 @@ package org.pixelgaffer.turnierserver.tourality.ai;
 import java.awt.Point;
 
 import org.pixelgaffer.turnierserver.ailibrary.Ai;
+import org.pixelgaffer.turnierserver.tourality.Feld;
 import org.pixelgaffer.turnierserver.tourality.TouralityResponse;
 import org.pixelgaffer.turnierserver.tourality.TouralityUpdate;
 
@@ -52,15 +53,15 @@ public abstract class TouralityAi extends Ai {
 		if(update.field != null)
 			for(int i = 0; i < update.field.length; i++)
 				for(int j = 0; j < update.field.length; j++)
-					field[i][j] = Feld.values()[update.field[i][j]];
+					field[i][j] = update.field[i][j];
 		else  {
 			for(int i = 0; i < field.length; i++)
 				for(int j = 0; j < field.length; j++)
-					if(field[i][j] == Feld.MÜNZE)
+					if(field[i][j] == Feld.COIN)
 						field[i][j] = Feld.FREI;
 			
 			for(Point coin : update.coins)
-				field[coin.x][coin.y] = Feld.MÜNZE;
+				field[coin.x][coin.y] = Feld.COIN;
 		}
 		
 		

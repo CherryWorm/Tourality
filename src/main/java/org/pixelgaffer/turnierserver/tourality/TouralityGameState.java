@@ -30,18 +30,18 @@ import org.pixelgaffer.turnierserver.gamelogic.interfaces.GameState;
 public class TouralityGameState implements GameState<TouralityUpdate, TouralityResponse> {
 	
 	public Point[] pos;
-	public int[][] field;
+	public Feld[][] field;
 	public int[] score;
 	
 	public List<Point> coins = new LinkedList<>();
 	public String[] output;
-	private boolean firstUpdate;
+	private boolean firstUpdate = true;
 	
 	public TouralityGameState() {
 		pos = new Point[2];
 		pos[0] = new Point();
 		pos[1] = new Point();
-		field = new int[20][20];
+		field = new Feld[20][20];
 		output = new String[2];
 		score = new int[2];
 		
@@ -51,16 +51,10 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 					char c = (char) in.read();
 					if(Character.isDigit(c)) {
 						pos[Character.getNumericValue(c) - 1] = new Point(i, j);
+						field[i][j] = Feld.FREI;
 					}
-					else if(c == '#') {
-						field[i][j] = 2;
-					}
-					else if(c == '+') {
-						field[i][j] = 1;
-					}
-					else {
-						field[i][j] = 0;
-					}
+					else
+						field[i][j] = Feld.fromRepr(c);
 				}
 				in.skip(1);
 			}
@@ -74,7 +68,11 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 		int otherIndex = ai.getIndex() == 0 ? 1 : 0;
 		TouralityUpdate update = new TouralityUpdate();
 		
-		if (firstUpdate) update.field = field;
+		if (firstUpdate)
+		{
+			update.field = field;
+			firstUpdate = false;
+		}
 		
 		update.coins = coins;
 		update.position = pos[ai.getIndex()];
@@ -110,11 +108,11 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 				break;
 		}
 		
-		if (newX >= 0 && newY >= 0 && newX < 20 && newY < 20 && field[newX][newY] != 2) {
+		if (newX >= 0 && newY >= 0 && newX < 20 && newY < 20 && field[newX][newY] != Feld.STEIN) {
 			pos[ai.getIndex()].x = newX;
 			pos[ai.getIndex()].y = newY;
-			if (field[newX][newY] == 1) {
-				field[newX][newY] = 0;
+			if (field[newX][newY] == Feld.COIN) {
+				field[newX][newY] = Feld.FREI;
 				coins.remove(new Point(newX, newY));
 				score[ai.getIndex()]++;
 			}

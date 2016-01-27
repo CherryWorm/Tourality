@@ -24,7 +24,7 @@ import java.util.List;
 
 public class TouralityUpdate {
 	
-	public int[][] field;
+	public Feld[][] field;
 	public List<Point> coins;
 	public Point position;
 	public Point enemyPosition;
@@ -35,10 +35,10 @@ public class TouralityUpdate {
 		int pos = 1;
 		
 		if(isField) {
-			field = new int[20][20];
+			field = new Feld[20][20];
 			for(int i = 0; i < 20; i++)
 				for(int j = 0; j < 20; j++)
-					field[i][j] = Character.getNumericValue(s.charAt(pos++));
+					field[i][j] = Feld.fromRepr(s.charAt(pos++));
 		}
 		
 		String[] pointStrings = s.substring(pos).split(";");
@@ -66,11 +66,19 @@ public class TouralityUpdate {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		System.out.println("TouralityUpdate.toString(): field is " + (field!=null ? "not " : "") + "null; coins: " + coins.size()
+			+ "; position: " + position + "; enemy: " + enemyPosition);
 		builder.append(field == null ? 0 : 1);
 		if (field != null) {
-			for(int[] row : field)
-				for(int i : row)
-					builder.append(i);
+			for(Feld[] row : field)
+			{
+				for(Feld i : row)
+				{
+					if (i == null)
+						System.err.println("achtung NULL !!!");
+					builder.append(i.repr());
+				}
+			}
 		} else {		
 			for (Point coin : coins) {
 				append(builder, coin);

@@ -11,7 +11,8 @@ logic {
 	LIBS += lib/java/utils.jar
 		
 	SOURCES = src/main/java
-	FILES   = org/pixelgaffer/turnierserver/tourality/TouralityGameState.java
+	FILES   = org/pixelgaffer/turnierserver/tourality/Feld.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityGameState.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityUpdate.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityResponse.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/logic/TouralityAiObject.java
@@ -27,12 +28,12 @@ java {
 	LIBS += lib/java/utils.jar
 
 	SOURCES = src/main/java
-	FILES   = org/pixelgaffer/turnierserver/tourality/TouralityGameState.java
+	FILES   = org/pixelgaffer/turnierserver/tourality/Feld.java
+	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityGameState.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityUpdate.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/TouralityResponse.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/ai/TouralityAi.java
 	FILES  += org/pixelgaffer/turnierserver/tourality/ai/Richtung.java
-	FILES  += org/pixelgaffer/turnierserver/tourality/ai/Feld.java
 }
 
 python {
