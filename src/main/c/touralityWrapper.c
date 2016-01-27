@@ -57,9 +57,9 @@ char* touralityMainLoop (Wrapper *w, TOURALITY_CALLBACK(callback))
 				for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
 					grid.fields[x][y] = *p++;
 			printf("received field:\n");
-			for (int x = 0; x < TOURALITY_GRID_SIZE; x++)
+			for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
 			{
-				for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
+				for (int x = 0; x < TOURALITY_GRID_SIZE; x++)
 					printf("%c", (char)grid.fields[x][y]);
 				printf("\n");
 			}

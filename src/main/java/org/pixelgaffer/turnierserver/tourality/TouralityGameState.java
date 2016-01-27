@@ -1,7 +1,7 @@
 /*
- * GrokerGameState.java
+ * TouralityGameState.java
  *
- * Copyright (C) 2015 Pixelgaffer
+ * Copyright (C) 2016 Pixelgaffer
  *
  * This work is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -46,15 +46,17 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 		score = new int[2];
 		
 		try(InputStreamReader in = new InputStreamReader(getClass().getResourceAsStream("1.trlt"))) {
-			for(int i = 0; i < 20; i++) {
-				for(int j = 0; j < 20; j++) {
+			for(int y = 0; y < 20; y++) {
+				for(int x = 0; x < 20; x++) {
 					char c = (char) in.read();
 					if(Character.isDigit(c)) {
-						pos[Character.getNumericValue(c) - 1] = new Point(i, j);
-						field[i][j] = Feld.FREI;
+						pos[Character.getNumericValue(c) - 1] = new Point(x, y);
+						field[x][y] = Feld.FREI;
 					}
 					else
-						field[i][j] = Feld.fromRepr(c);
+						field[x][y] = Feld.fromRepr(c);
+					if (c == Feld.COIN.repr())
+						coins.add(new Point(x, y));
 				}
 				in.skip(1);
 			}
@@ -83,7 +85,7 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 	
 	@Override
 	public void clearChanges(Ai ai) {
-		coins.clear();
+// 		coins.clear();
 		firstUpdate = false;
 	}
 	
