@@ -3,6 +3,9 @@
 #include "touralityWrapper.h"
 
 #include <time.h>
+#include <unistd.h>
+
+long long int seed = -1;
 
 /// Diese Methode wird jede Runde aufgerufen. Player ist ein struct mit zwei int-Werten x und y.
 /// Der return-Wert ist die Richtung, in die sich die KI bewegt. Zur Ausgabe stehen die folgenden
@@ -13,7 +16,9 @@
 Direction move (Player *me, Player *enemy, Grid *grid, OutputBuffer *out)
 {
 	// eine zufällige Bewegung machen
-	srand(time(NULL));
+	if (seed == -1)
+		seed = time(NULL) ^ getpid();
+	srand(seed++);
 	int r = rand() % 5;
 	if (r == 0)
 	{
