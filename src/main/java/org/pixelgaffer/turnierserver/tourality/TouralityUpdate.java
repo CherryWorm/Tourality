@@ -52,11 +52,12 @@ public class TouralityUpdate {
 			points.add(p);
 		}
 		
+		coins = new LinkedList<>();
 		for(int i = 0; i < points.size() - 2; i++) {
 			coins.add(points.get(i));
 		}
-		position = coins.get(coins.size() - 2);
-		enemyPosition = coins.get(coins.size() - 1);
+		position = points.get(points.size() - 2);
+		enemyPosition = points.get(points.size() - 1);
 	}
 	
 	
