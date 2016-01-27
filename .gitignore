@@ -28,6 +28,7 @@ buildgame
 
 # zeugs das generiert wird
 simpleplayer/*.zip
+.kdev_include_paths
 
 doc/html
 doc/latex
