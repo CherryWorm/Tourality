@@ -49,7 +49,8 @@ go {
 c {
 	LIBS        += lib/c/ailib/libailib.so
 	INCLUDEPATH  = lib/c/ailib
-	HEADERS      = lib/c/ailib/output.h
+	HEADERS      = lib/c/ailib/catchsig.h
+	HEADERS     += lib/c/ailib/output.h
 	HEADERS     += lib/c/ailib/properties.h
 	HEADERS     += lib/c/ailib/wrapper.h
 	
