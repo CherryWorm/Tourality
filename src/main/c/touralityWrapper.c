@@ -41,7 +41,7 @@ char* touralityMainLoop (Wrapper *w, TOURALITY_CALLBACK(callback))
 {
 	Grid grid;
 	for (int i = 0; i < TOURALITY_COINS; i++)
-		grid.coinsAvail[i] = 1;
+		grid.coinsAvail[i] = 0;
 	char *l = 0;
 	while (strlen(l = readLine(w)) > 0)
 	{
@@ -53,16 +53,28 @@ char* touralityMainLoop (Wrapper *w, TOURALITY_CALLBACK(callback))
 		*p++;
 		if (isField)
 		{
+			int coinCount = 0;
 			for (int x = 0; x < TOURALITY_GRID_SIZE; x++)
-				for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
-					grid.fields[x][y] = *p++;
-			printf("received field:\n");
-			for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
 			{
-				for (int x = 0; x < TOURALITY_GRID_SIZE; x++)
-					printf("%c", (char)grid.fields[x][y]);
-				printf("\n");
+				for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
+				{
+					grid.fields[x][y] = *p++;
+					if (grid.fields[x][y] == COIN)
+					{
+						grid.coinsX[coinCount] = x;
+						grid.coinsY[coinCount] = y;
+						grid.coinsAvail[coinCount] = 1;
+						coinCount++;
+					}
+				}
 			}
+// 			printf("received field:\n");
+// 			for (int y = 0; y < TOURALITY_GRID_SIZE; y++)
+// 			{
+// 				for (int x = 0; x < TOURALITY_GRID_SIZE; x++)
+// 					printf("%c", (char)grid.fields[x][y]);
+// 				printf("\n");
+// 			}
 		}
 		// split the remaining at ;
 		char *s = p;
