@@ -34,8 +34,8 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 	protected Object update() {
 		TouralityGameState state = (TouralityGameState) gamestate;
 		
-		progress = (40 - state.coins.size()) / 40.0;
-		display = "Es wurden schon " + (40 - state.coins.size()) + " von 40 coins aufgesammelt";
+		progress = (80 - state.coins.size()) / 80.0;
+		display = "Es wurden schon " + (80 - state.coins.size()) + " von 80 coins aufgesammelt";
 		
 		for (Ai ai : game.getAis())
 			if(!getUserObject(ai).lost)
