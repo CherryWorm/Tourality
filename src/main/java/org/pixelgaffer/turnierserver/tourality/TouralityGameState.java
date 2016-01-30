@@ -69,6 +69,8 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 	@Override
 	public void clearChanges(Ai ai) {
 		firstUpdate = false;
+		output[0] = "";
+		output[1] = "";
 	}
 	
 	@Override
