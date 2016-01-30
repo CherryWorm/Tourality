@@ -39,8 +39,10 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 			if(!getUserObject(ai).lost)
 				getUserObject(ai).score = state.score[ai.getIndex()];
 		
-		if(state.coins.isEmpty())
+		if(state.coins.isEmpty()) {
+			sendToFrontend(new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId()));
 			endGame("Alle Coins wurden aufgesammelt!");
+		}
 		
 		return new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId());
 	}
