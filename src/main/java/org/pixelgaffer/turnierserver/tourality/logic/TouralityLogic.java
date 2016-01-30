@@ -42,6 +42,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 				getUserObject(ai).score = state.score[ai.getIndex()];
 		
 		if(state.coins.isEmpty()) {
+<<<<<<< HEAD
 			if(!first) {
 				sendToFronted(new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId()));
 				endGame("Alle Coins wurden aufgesammelt!");
@@ -50,6 +51,10 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 				first = false;
 				state.reset();
 			}
+=======
+			sendToFronted(new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId()));
+			endGame("Alle Coins wurden aufgesammelt!");
+>>>>>>> 6b270befef08471842759269faf6f15550758ad3
 		}
 		
 		return new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId());
