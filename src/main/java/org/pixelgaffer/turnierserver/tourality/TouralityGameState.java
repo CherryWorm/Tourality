@@ -42,7 +42,7 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 	private int fieldId;
 	
 	public TouralityGameState() {
-		fieldId = random.nextInt(1) + 1;
+		fieldId = random.nextInt(2) + 1;
 		reset();
 		output = new String[2];
 		score = new int[2];
