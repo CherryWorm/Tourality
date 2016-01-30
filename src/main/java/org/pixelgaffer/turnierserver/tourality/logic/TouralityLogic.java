@@ -70,6 +70,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 
 	@Override
 	public void lost(Ai ai) {
+		super.lost(ai);
 		getUserObject(ai).score = ((TouralityGameState) gamestate).score[ai.getIndex()];
 		if(game.getAis().stream().allMatch((Ai a) -> a.getObject().lost)) {
 			endGame("Alles KIs sind abgestürzt/haben aufgegeben!");
