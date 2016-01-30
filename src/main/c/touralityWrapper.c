@@ -135,6 +135,9 @@ char* touralityMainLoop (Wrapper *w, TOURALITY_CALLBACK(callback))
 		write(w->socketfd, ":", 1);
 		if (result->output)
 		{
+			printf("--- output from the ai ---\n");
+			printf(result->output);
+			printf("\n--- end output ---\n");
 			answer = escape(result->output);
 			write(w->socketfd, answer, strlen(answer));
 			free(answer);

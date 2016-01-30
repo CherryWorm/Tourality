@@ -22,6 +22,7 @@
 #include "wrapper.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 /// The default tourality grid size.
 #define TOURALITY_GRID_SIZE 20
@@ -102,6 +103,7 @@ char* touralityMainLoop (Wrapper *w, TOURALITY_CALLBACK(callback));
 #ifdef __cplusplus
 
 #include <sstream>
+#include <string>
 
 /**
  * Dies ist die Mutter-Klasse von jeder Tourality-KI. Sie muss im Konstuktor genau ein Argument, `Wrapper*`,
@@ -135,7 +137,10 @@ public:
 	 */
 	const char* readOutput ()
 	{
-		const char *outbuf = _out.str().data();
+		std::string outstr = _out.str();
+		char *outbuf = (char*) malloc(outstr.length() + 1);
+		strcpy(outbuf, outstr.data());
+		outbuf[outstr.length()] = 0;
 		_out.str("");
 		return outbuf;
 	}
