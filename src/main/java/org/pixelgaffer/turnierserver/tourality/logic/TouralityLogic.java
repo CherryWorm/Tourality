@@ -27,7 +27,9 @@ import org.pixelgaffer.turnierserver.tourality.TouralityGameState;
 import org.pixelgaffer.turnierserver.tourality.TouralityResponse;
 
 public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObject, TouralityResponse> {
-
+	
+	private boolean first = true;
+	
 	@Override
 	protected Object update() {
 		TouralityGameState state = (TouralityGameState) gamestate;
@@ -40,8 +42,14 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 				getUserObject(ai).score = state.score[ai.getIndex()];
 		
 		if(state.coins.isEmpty()) {
-			sendToFrontend(new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId()));
-			endGame("Alle Coins wurden aufgesammelt!");
+			if(!first) {
+				sendToFronted(new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId()));
+				endGame("Alle Coins wurden aufgesammelt!");
+			}
+			else {
+				first = false;
+				state.reset();
+			}
 		}
 		
 		return new TouralityRenderData(state, game.getAis().get(0).getId(), game.getAis().get(1).getId());
@@ -55,16 +63,17 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 	@Override
 	protected void setup() {
 		for (Ai ai : game.getAis()) {
-			getUserObject(ai).mikrosLeft = 2000000;
+			getUserObject(ai).mikrosLeft = 4000000;
 		}
 		maxTurns = -1;
 	}
 
 	@Override
 	public void lost(Ai ai) {
-		((TouralityGameState) gamestate).score[ai.getIndex()] = -1;
-		getUserObject(ai).score = -1;
-		endGame("Die KI " + ai.getId() + " hat verloren");
+		getUserObject(ai).score = ((TouralityGameState) gamestate).score[ai.getIndex()];
+		if(game.getAis().stream().allMatch((Ai a) -> a.getObject().lost)) {
+			endGame("Alles KIs sind abgestürzt/haben aufgegeben!");
+		}
 	}
 
 	@Override
@@ -86,7 +95,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 
 	@Override
 	public float aiTimeout() {
-		return 10;
+		return 20;
 	}
 
 	@Override

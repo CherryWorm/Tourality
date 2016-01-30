@@ -23,11 +23,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.pixelgaffer.turnierserver.gamelogic.interfaces.Ai;
 import org.pixelgaffer.turnierserver.gamelogic.interfaces.GameState;
 
 public class TouralityGameState implements GameState<TouralityUpdate, TouralityResponse> {
+	
+	private static Random random = new Random();
 	
 	public Point[] pos;
 	public Feld[][] field;
@@ -36,33 +39,13 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 	public List<Point> coins = new LinkedList<>();
 	public String[] output;
 	private boolean firstUpdate = true;
+	private int fieldId;
 	
 	public TouralityGameState() {
-		pos = new Point[2];
-		pos[0] = new Point();
-		pos[1] = new Point();
-		field = new Feld[20][20];
+		fieldId = random.nextInt(1) + 1;
+		reset();
 		output = new String[2];
 		score = new int[2];
-		
-		try(InputStreamReader in = new InputStreamReader(getClass().getResourceAsStream("1.trlt"))) {
-			for(int y = 0; y < 20; y++) {
-				for(int x = 0; x < 20; x++) {
-					char c = (char) in.read();
-					if(Character.isDigit(c)) {
-						pos[Character.getNumericValue(c) - 1] = new Point(x, y);
-						field[x][y] = Feld.FREI;
-					}
-					else
-						field[x][y] = Feld.fromRepr(c);
-					if (c == Feld.COIN.repr())
-						coins.add(new Point(x, y));
-				}
-				in.skip(1);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
@@ -85,7 +68,6 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 	
 	@Override
 	public void clearChanges(Ai ai) {
-// 		coins.clear();
 		firstUpdate = false;
 	}
 	
@@ -130,6 +112,32 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 			field = changes.field;
 		}
 		coins = changes.coins;
+	}
+
+	public void reset() {
+		pos = new Point[2];
+		pos[0] = new Point();
+		pos[1] = new Point();
+		field = new Feld[20][20];
+		
+		try(InputStreamReader in = new InputStreamReader(getClass().getResourceAsStream(fieldId + ".trlt"))) {
+			for(int y = 0; y < 20; y++) {
+				for(int x = 0; x < 20; x++) {
+					char c = (char) in.read();
+					if(Character.isDigit(c)) {
+						pos[Character.getNumericValue(c) - 1] = new Point(x, y);
+						field[x][y] = Feld.FREI;
+					}
+					else
+						field[x][y] = Feld.fromRepr(c);
+					if (c == Feld.COIN.repr())
+						coins.add(new Point(x, y));
+				}
+				in.skip(1);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
