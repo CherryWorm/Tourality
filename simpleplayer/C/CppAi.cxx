@@ -6,9 +6,14 @@
 #include "touralityWrapper.h"
 
 #include <ctime>
+#include <unistd.h>
 
 class Ai : public TouralityAi
 {
+	
+private:
+	long long int seed = -1;
+	
 public:
 	explicit Ai (Wrapper *w) : TouralityAi(w) {}
 	
@@ -18,7 +23,9 @@ public:
 	Direction move (Player *me, Player *enemy, Grid *grid)
 	{
 		// eine zufällige Bewegung machen
-		srand(time(NULL));
+		if (seed == -1)
+			seed = time(NULL) ^ getpid();
+		srand(seed++);
 		int r = rand() % 5;
 		if (r == 0)
 		{
