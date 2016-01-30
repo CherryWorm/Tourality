@@ -95,7 +95,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 
 	@Override
 	public float aiTimeout() {
-		return 20;
+		return 40;
 	}
 
 	@Override
