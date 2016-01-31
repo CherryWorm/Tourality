@@ -63,7 +63,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 	@Override
 	protected void setup() {
 		for (Ai ai : game.getAis()) {
-			getUserObject(ai).mikrosLeft = 4000000;
+			getUserObject(ai).mikrosLeft = 2000000;
 		}
 		maxTurns = -1;
 	}
@@ -106,7 +106,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 
 	@Override
 	public float aiTimeout() {
-		return 40;
+		return 30;
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 
 	@Override
 	protected int maxResponseTime() {
-		return 10000;
+		return 1000;
 	}
 
 	@Override
