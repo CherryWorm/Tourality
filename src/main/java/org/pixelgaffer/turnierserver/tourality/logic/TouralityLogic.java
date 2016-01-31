@@ -119,4 +119,15 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 		}
 	}
 
+	@Override
+	protected int maxResponseTime() {
+		return 10000;
+	}
+
+	@Override
+	protected void aiAnswerTimeout(Ai ai) {
+		getUserObject(ai).score = -1;
+		endGame("KI " + (ai.getIndex() + 1) + " hat zu lange zum Anworten gebraucht");
+	}
+
 }
