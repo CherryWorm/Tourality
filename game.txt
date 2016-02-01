@@ -20,6 +20,7 @@ logic {
 	FILES  += org/pixelgaffer/turnierserver/tourality/logic/TouralityRenderData.java
 	RESFILES  = org/pixelgaffer/turnierserver/tourality/1.trlt
 	RESFILES += org/pixelgaffer/turnierserver/tourality/2.trlt
+	RESFILES += org/pixelgaffer/turnierserver/tourality/3.trlt
 	LOGICCLASS = org.pixelgaffer.turnierserver.tourality.logic.TouralityLogic
 }
 
