@@ -49,6 +49,7 @@ public class TouralityLogic extends AlternatingTurnBasedGameLogic<TouralityAiObj
 			else {
 				first = false;
 				state.reset();
+				state.changePos();
 			}
 		}
 		

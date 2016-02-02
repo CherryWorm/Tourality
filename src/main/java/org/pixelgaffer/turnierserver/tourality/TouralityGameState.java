@@ -141,5 +141,11 @@ public class TouralityGameState implements GameState<TouralityUpdate, TouralityR
 			e.printStackTrace();
 		}
 	}
-	
+
+    public void changePos ()
+    {
+	Point tmp = pos[0];
+	pos[0] = pos[1];
+	pos[1] = tmp;
+    }
 }
